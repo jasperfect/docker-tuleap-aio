@@ -11,7 +11,11 @@ RUN yum install -y mysql-server \
     postfix \
     openssh-server \
     rsyslog \
-    cronie && \
+    cronie \
+    nano \
+    stunnel \
+    cyrus-sasl \
+    cyrus-sasl-plain && \
     yum install -y python-pip && \
     yum clean all && \
     curl https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | python
@@ -52,7 +56,11 @@ RUN sed -i '/session    required     pam_loginuid.so/c\#session    required     
 
 COPY supervisord.conf /etc/supervisord.conf
 
+COPY etc/init.d/. /etc/init.d
+
 COPY . /root/app
+
+RUN chmod 755 /root/app/*.sh
 
 WORKDIR /root/app
 

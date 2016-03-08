@@ -78,7 +78,31 @@ perl -pi -e "s%^alias_maps = hash:/etc/aliases%alias_maps = hash:/etc/aliases,ha
 perl -pi -e "s%^alias_database = hash:/etc/aliases%alias_database = hash:/etc/aliases,hash:/etc/aliases.codendi%" /etc/postfix/main.cf
 perl -pi -e "s%^#recipient_delimiter = %recipient_delimiter = %" /etc/postfix/main.cf
 
-perl -pi -e "s%\$sys_force_ssl = 0%\$sys_force_ssl = $SYS_FORCE_SSL%" /etc/tuleap/conf/local.inc
+# Update php config
+perl -pi -e "s%^short_open_tag = Off%short_open_tag = On%" /etc/php.ini
+perl -pi -e "s%^;date.timezone =%date.timezone = Asia/Shanghai%" /etc/php.ini
+perl -pi -e "s%^post_max_size = 8M%post_max_size = $PHP_POST_MAX_SIZE%" /etc/php.ini
+perl -pi -e "s%^;default_charset = \"iso-8859-1\"%default_charset = \"utf-8\"%" /etc/php.ini
+perl -pi -e "s%^upload_max_filesize = 2M%upload_max_filesize = $PHP_UPLOAD_MAX_FILESIZE%" /etc/php.ini
+perl -pi -e "s%^;iconv.input_encoding = ISO-8859-1%iconv.input_encoding = UTF-8%" /etc/php.ini
+perl -pi -e "s%^;iconv.internal_encoding = ISO-8859-1%iconv.internal_encoding = UTF-8%" /etc/php.ini
+perl -pi -e "s%^;iconv.output_encoding = ISO-8859-1%iconv.output_encoding = UTF-8%" /etc/php.ini
+perl -pi -e "s%^;intl.default_locale =%intl.default_locale = en_US.UTF-8%" /etc/php.ini
+perl -pi -e "s%^;mbstring.language = Japanese%mbstring.language = Chinese%" /etc/php.ini
+perl -pi -e "s%^;mbstring.internal_encoding = EUC-JP%mbstring.internal_encoding = UTF-8%" /etc/php.ini
+perl -pi -e "s%^;mbstring.http_output = SJIS%mbstring.http_output = UTF-8%" /etc/php.ini
+perl -pi -e "s%^;mbstring.encoding_translation = Off%mbstring.encoding_translation = On%" /etc/php.ini
+perl -pi -e "s%^;mbstring.func_overload = 0%mbstring.func_overload = 6%" /etc/php.ini
+
+# Update nscd config
+perl -pi -e "s%enable-cache[\t ]+group[\t ]+yes%enable-cache group no%" /etc/nscd.conf
+
+# Update mysql config
+perl -pi -e "s%max_allowed_packet=128M%max_allowed_packet=$MYSQL_MAX_ALLOWED_PACKET%" /etc/my.cnf
+
+perl -pi -e "s%\$sys_force_ssl[\t ]+=[\t ]+0%\$sys_force_ssl = $SYS_FORCE_SSL%" /etc/tuleap/conf/local.inc
+perl -pi -e "s%\$sys_max_size_upload[\t ]+=[\t ]+67108864%\$sys_max_size_upload = $SYS_MAX_SIZE_UPLOAD%" /etc/tuleap/conf/local.inc
+perl -pi -e "s%\$sys_max_size_attachment[\t ]+=[\t ]+16777216%\$sys_max_size_attachment = $SYS_MAX_SIZE_ATTACHEMENT%" /etc/tuleap/conf/local.inc
 
 cat >> /etc/postfix/main.cf <<EoT
 

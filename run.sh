@@ -17,13 +17,6 @@ fi
 # Allow configuration update at boot time
 ./boot-update-config.sh
 
-# Update php config
-perl -pi -e "s%^short_open_tag = Off%short_open_tag = On%" /etc/php.ini
-perl -pi -e "s%^;date.timezone =%date.timezone = Europe/Paris%" /etc/php.ini
-
-# Update nscd config
-perl -pi -e "s%enable-cache[\t ]+group[\t ]+yes%enable-cache group no%" /etc/nscd.conf
-
 source mysql-utils.sh
 
 start_mysql
